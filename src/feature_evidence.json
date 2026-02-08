@@ -1,0 +1,94 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-add-a-dedicated-loxo-integration-section-that-is-reachable-from-the-integrations-area-and-clearly-exposes-loxo-connection-status-and-configuration-options-sample-data-toggle-and-api-key-using-the-existing-integration-state-model-for-loxo",
+      "featureTitle": "Add a dedicated Loxo integration section that is reachable from the Integrations area and clearly exposes Loxo connection status and configuration options (sample data toggle and API key), using the existing integration state model for `loxo`.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/integrations/IntegrationSettingsPanel.tsx",
+        "frontend/src/pages/integrations/IntegrationsPage.tsx",
+        "frontend/src/pages/integrations/LoxoIntegrationPage.tsx",
+        "frontend/src/pages/integrations/ManageIntegrationDrawer.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-25"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-single-discoverable-navigation-menu-experience-that-lists-all-available-dashboard-views-and-report-views-in-one-place-e-g-a-hub-page-with-sections-tabs-for-dashboards-reports-exports-and-analysis-views-so-users-can-browse-all-report-and-dashboard-types-from-one-menu",
+      "featureTitle": "Add a single, discoverable navigation/menu experience that lists all available dashboard views and report views in one place (e.g., a hub page with sections/tabs for Dashboards, Reports/Exports, and Analysis views), so users can browse all report and dashboard types from one menu.",
+      "files": [
+        "frontend/src/components/layout/AppShell.tsx",
+        "frontend/src/pages/dashboards/DashboardHubPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-26"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-a-new-default-dashboard-view-named-all-metrics-that-shows-all-key-kpis-and-metrics-in-one-screen-a-compact-scrollable-overview-using-the-existing-sample-metric-computation-layer-and-global-filters",
+      "featureTitle": "Create a new default dashboard view named \"All Metrics\" that shows all key KPIs and metrics in one screen (a compact, scrollable overview), using the existing sample metric computation layer and global filters.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/dashboards/AllMetricsDashboardPage.tsx",
+        "frontend/src/pages/dashboards/DashboardHubPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-27"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-provide-an-option-to-create-and-save-a-custom-dashboard-by-selecting-from-a-predefined-library-of-widgets-metrics-kpi-cards-simple-trend-chart-and-at-least-one-table-widget-and-persist-the-saved-custom-dashboards-so-they-reappear-in-the-dashboards-menu-hub-for-the-same-signed-in-user-and-or-their-organization",
+      "featureTitle": "Provide an option to create and save a custom dashboard by selecting from a predefined library of widgets/metrics (KPI cards, simple trend chart, and at least one table widget), and persist the saved custom dashboards so they reappear in the dashboards menu/hub for the same signed-in user (and/or their organization).",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/dashboards/WidgetRenderer.tsx",
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/pages/dashboards/CustomDashboardBuilderPage.tsx",
+        "frontend/src/pages/dashboards/CustomDashboardPage.tsx",
+        "frontend/src/pages/dashboards/DashboardHubPage.tsx",
+        "frontend/src/utils/dashboardWidgetLibrary.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-28"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "kind": "build_request",
+  "title": "Add Loxo integration section, unified Reports & Dashboards menu, default All Metrics dashboard, and custom dashboard builder",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-25",
+      "text": "Add a dedicated Loxo integration section that is reachable from the Integrations area and clearly exposes Loxo connection status and configuration options (sample data toggle and API key), using the existing integration state model for `loxo`.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "Give the section to integrate with loxo"
+        ]
+      },
+      "acceptanceCriteria": [
+        "From the Integrations area, users can directly open a Loxo-focused screen/section (not only a generic list item).",
+        "The Loxo section shows: Connected/Not Connected status and fields to manage configuration consistent with the existing Manage Integration behavior (sample data toggle + API key input + connect/disconnect).",
+        "User-facing text is in English and uses existing styling/components (shadcn + Tailwind)."
+      ]
+    },
+    {
+      "id": "REQ-26",
+      "text": "Add a single, discoverable navigation/menu experience that lists all available dashboard views and report views in one place (e.g., a hub page with sections/tabs for Dashboards, Reports/Exports, and Analysis views), so users can browse all report and dashboard types from one menu.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "give menu for all types of reports and dashboard view"
+        ]
+      },
+      "acceptanceCriteria": [
+        "There is a single page reachable from the sidebar navigation that lists links to: existing dashboards (Leadership/Recruiter/Ops), Funnel Analysis, Data Health, Alerts & Insights, and Reports & Exports.",
+        "Each item in the menu/hub navigates to the existing route when clicked.",
+        "The new menu/hub is visible to non-admin users but respects existing role-based visibility rules already used in the app shell (admin-only items remain admin-only)."
+      ]
+    },
+    {
+      "id": "REQ-27",
+      "text": "Create a new default dashboard view named \"All Metrics\" that shows all key KPIs and metrics in one screen (a compact, scrollable overview), using the existing sample metric computation layer and global filters.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "give one default dashboard to show all metrics and kpi"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A new dashboard route exists for \"All Metrics\" and it is accessible from the dashboards hub/menu.",
+        "The \"All Metrics\" dashboard displays a comprehensive set of KPI cards (at minimum: Total Calls, Total Hours Logged, Placements, Interviews, Offers, Revenue, Margin, Active Contractors, Revenue per Recruiter, Revenue per Hour, Calls per Placement, Hours per Hire, Time-to-Fill, Utilization %), computed from the current global filters.",
+        "The page uses the existing layout patterns (page title + optional global filter bar + cards/charts styling consistent with other dashboards)."
+      ]
+    },
+    {
+      "id": "REQ-28",
+      "text": "Provide an option to create and save a custom dashboard by selecting from a predefined library of widgets/metrics (KPI cards, simple trend chart, and at least one table widget), and persist the saved custom dashboards so they reappear in the dashboards menu/hub for the same signed-in user (and/or their organization).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "give option to create custom dashboard,"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Users can open a \"Create Custom Dashboard\" flow from the dashboards hub/menu.",
+        "Users can name the dashboard and add/remove/reorder widgets from a predefined list (no freeform code).",
+        "Saving a custom dashboard persists it via backend API and it appears in the dashboards hub/menu after refresh/sign-out+sign-in.",
+        "Users can open a saved custom dashboard and see the selected widgets rendered using current global filters.",
+        "Non-admin users can only create/edit/delete their own custom dashboards; admins can access their own as well (no requirement to manage other users’ dashboards unless already supported)."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor in backend/main.mo (no additional backend services).",
+    "Do not modify frontend immutable paths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui.",
+    "Use English for all user-facing text."
+  ],
+  "nonGoals": [
+    "Implementing real Loxo OAuth/API ingestion beyond the existing prototype connection metadata (API key/sample toggle).",
+    "Building a full drag-and-drop grid layout editor for custom dashboards; the custom dashboard builder should be a constrained widget picker with simple ordering.",
+    "Adding third-party auth providers or external databases."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

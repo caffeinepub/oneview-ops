@@ -1,0 +1,138 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Loxo integration section, unified Reports & Dashboards hub, All Metrics dashboard, and custom dashboard builder",
+  "requirements": [
+    {
+      "id": "REQ-25",
+      "summary": "Add a dedicated Loxo integration screen reachable from Integrations that shows connection status and configuration (sample data toggle + API key + connect/disconnect) using the existing `loxo` integration state model.",
+      "acceptanceCriteria": [
+        "From the Integrations area, users can directly open a Loxo-focused screen/section (not only a generic list item).",
+        "The Loxo section shows: Connected/Not Connected status and fields to manage configuration consistent with the existing Manage Integration behavior (sample data toggle + API key input + connect/disconnect).",
+        "User-facing text is in English and uses existing styling/components (shadcn + Tailwind)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/integrations/LoxoIntegrationPage.tsx",
+          "operation": "create",
+          "description": "Create a dedicated Loxo integration page that reads `orgConfig.integrations.loxo` to display Connected/Not Connected status and provides configuration controls (sample data toggle, API key input, connect/save, disconnect) consistent with existing styling. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/integrations/IntegrationSettingsPanel.tsx",
+          "operation": "create",
+          "description": "Extract a reusable integration settings panel (sample data toggle, API key field, save/connect, disconnect) so both the drawer and the new Loxo page share identical behavior/UI. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/integrations/ManageIntegrationDrawer.tsx",
+          "operation": "modify",
+          "description": "Refactor to use the new IntegrationSettingsPanel so Manage Integration behavior remains consistent and is not duplicated; ensure Loxo-specific behavior stays aligned with existing state model. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/integrations/IntegrationsPage.tsx",
+          "operation": "modify",
+          "description": "Add a clear navigation affordance from the Loxo integration card to the dedicated `/integrations/loxo` screen/section (in addition to existing Manage drawer access), ensuring it is directly discoverable. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Register a new route for the dedicated Loxo integration page (e.g., `/integrations/loxo`) and wire it into the router tree so it can be navigated to from Integrations. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-26",
+      "summary": "Create a single, discoverable hub page from the sidebar that lists all dashboards and report/analysis views with role-respecting visibility and links to existing routes.",
+      "acceptanceCriteria": [
+        "There is a single page reachable from the sidebar navigation that lists links to: existing dashboards (Leadership/Recruiter/Ops), Funnel Analysis, Data Health, Alerts & Insights, and Reports & Exports.",
+        "Each item in the menu/hub navigates to the existing route when clicked.",
+        "The new menu/hub is visible to non-admin users but respects existing role-based visibility rules already used in the app shell (admin-only items remain admin-only)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/dashboards/DashboardHubPage.tsx",
+          "operation": "modify",
+          "description": "Expand the existing hub page at `/` into a unified Reports & Dashboards hub that includes sections/tabs for Dashboards, Analysis, and Reports/Exports; include links to existing routes (Leadership/Recruiter/Ops, Funnel Analysis, Data Health, Alerts & Insights, Reports & Exports) and apply the same role-based filtering approach already used. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/layout/AppShell.tsx",
+          "operation": "modify",
+          "description": "Update sidebar navigation to make the unified hub the primary discoverable entry (e.g., rename the `/` item to “Reports & Dashboards” and ensure role-based visibility behavior remains intact; admin-only items remain admin-only). Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-27",
+      "summary": "Add an \"All Metrics\" dashboard route that shows a compact, scrollable overview of key KPIs computed from global filters using the existing metric computation layer.",
+      "acceptanceCriteria": [
+        "A new dashboard route exists for \"All Metrics\" and it is accessible from the dashboards hub/menu.",
+        "The \"All Metrics\" dashboard displays a comprehensive set of KPI cards (at minimum: Total Calls, Total Hours Logged, Placements, Interviews, Offers, Revenue, Margin, Active Contractors, Revenue per Recruiter, Revenue per Hour, Calls per Placement, Hours per Hire, Time-to-Fill, Utilization %), computed from the current global filters.",
+        "The page uses the existing layout patterns (page title + optional global filter bar + cards/charts styling consistent with other dashboards)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/dashboards/AllMetricsDashboardPage.tsx",
+          "operation": "create",
+          "description": "Create the All Metrics dashboard page using GlobalFilterBar and existing metric/sample computation (e.g., computeAllMetrics + generateDashboardMetrics) to render the required KPI cards in a compact, scrollable layout consistent with other dashboards. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Register a new route for the All Metrics dashboard (e.g., `/dashboard/all-metrics`) and add it to the router tree. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/dashboards/DashboardHubPage.tsx",
+          "operation": "modify",
+          "description": "Add “All Metrics” to the dashboards list in the unified hub so it is accessible and navigates to the new route. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-28",
+      "summary": "Add a custom dashboard builder with a predefined widget library, allow naming and ordering widgets, persist to backend, and list/open saved dashboards for the signed-in user from the dashboards hub.",
+      "acceptanceCriteria": [
+        "Users can open a \"Create Custom Dashboard\" flow from the dashboards hub/menu.",
+        "Users can name the dashboard and add/remove/reorder widgets from a predefined list (no freeform code).",
+        "Saving a custom dashboard persists it via backend API and it appears in the dashboards hub/menu after refresh/sign-out+sign-in.",
+        "Users can open a saved custom dashboard and see the selected widgets rendered using current global filters.",
+        "Non-admin users can only create/edit/delete their own custom dashboards; admins can access their own as well (no requirement to manage other users’ dashboards unless already supported)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Add React Query hooks for dashboard persistence and retrieval using the existing backend actor capabilities (fetch dashboards, create dashboard, update dashboard) with cache invalidation so saved custom dashboards reappear after refresh. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/dashboards/CustomDashboardBuilderPage.tsx",
+          "operation": "create",
+          "description": "Create a constrained “Create Custom Dashboard” flow: name input, predefined widget library picker, add/remove widgets, and simple ordering controls (up/down). On save, persist via backend and navigate back to the hub (or to the newly created dashboard view). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/dashboards/CustomDashboardPage.tsx",
+          "operation": "create",
+          "description": "Create a page to render a saved custom dashboard by id: load dashboard definition via backend, enforce owner-only access in the UI (only show/edit for dashboards owned by the signed-in principal), and render widgets using current global filters. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/dashboards/WidgetRenderer.tsx",
+          "operation": "create",
+          "description": "Implement a widget renderer that supports the predefined widget types required (KPI cards, simple trend chart, and at least one table widget), mapping saved widget configs to existing metric computations and existing chart/table components/patterns. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/utils/dashboardWidgetLibrary.ts",
+          "operation": "create",
+          "description": "Define the predefined widget/metric library (IDs, labels, descriptions, widgetType, and config templates) used by the builder; include at least KPI cards, a trend chart option, and a table option, aligned to existing metrics computations. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Add routes for the custom dashboard builder and custom dashboard viewer (e.g., `/dashboard/custom/new` and `/dashboard/custom/$dashboardId`) and wire them into the router tree. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/dashboards/DashboardHubPage.tsx",
+          "operation": "modify",
+          "description": "Add a “Create Custom Dashboard” entry point and list the signed-in user’s saved custom dashboards (loaded from backend) so they appear in the hub; clicking navigates to the existing custom dashboard route. Ensure non-admin users only see their own dashboards and admins see only their own unless broader visibility is already supported. Verify the component's usage instructions before implementing."
+        }
+      ]
+    }
+  ]
+}

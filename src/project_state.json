@@ -1,0 +1,401 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 9,
+  "summary": "Build “OneView Ops,” a B2B SaaS no-code/low-code analytics platform (inspired by OneUp Sales) for Staffing Agencies and Internal TA teams that integrates Loxo (ATS/CRM), Aircall (calling), and timesheets (Clockify/Harvest/Toggl/CSV) to connect recruiter effort (calls + hours) to outcomes (submissions/interviews/placements/hires/revenue/time-to-fill). Deliver a clickable prototype with sample data showing onboarding, integrations, cross-system user mapping, role-based dashboards, effort→outcome funnel, gamified leaderboards, AI-generated report examples, exports, alerts, and data health views.",
+  "architectural_notes": [
+    "B2B multi-tenant SaaS supporting two org types: Staffing Agency and Internal TA.",
+    "Integrations required: Loxo (OAuth/API), Aircall (API), Timesheet systems (Clockify/Harvest/Toggl) plus CSV import fallback.",
+    "Cross-system identity resolution: auto-map users with manual override to reconcile differing user IDs/emails.",
+    "Role-based access control and role-specific navigation/dashboards (Admin, Leadership, Recruiter/Consultant, Ops/HR).",
+    "Analytics focus: connect hiring activity + call effort + time logged to outcomes (placements/hires/revenue/time-to-fill).",
+    "Prototype-first deliverable: clickable UI with representative sample data (not full production build).",
+    "Dashboard KPI set should cover staffing funnel and financial/utilization metrics: placements, interviews, offers, revenue, margin, and active contractors (as available via Loxo and/or derived metrics).",
+    "Master identity/join logic: primary key recruiter_email; secondary recruiter_id; time-series joins by date; job-level joins by job_id.",
+    "Analytics model expectation: star schema with Facts (Calls/Hours/Pipeline/Placements) and Dimensions (Recruiter/Job/Client/Date) for dashboarding.",
+    "Data quality handling: flag missing recruiter email, invalidate 0-duration calls, warn on >16 hours/day, quarantine placements without job; expose in Data Health view."
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-create-a-working-clickable-prototype-for-oneview-ops-that-demonstrates-the-full-product-flow-end-to-end-using-realistic-sample-data-authentication-onboarding-connection-steps-for-loxo-aircall-timesheets-user-mapping-and-role-based-dashboards-for-leadership-recruiter-consultant-and-ops-hr",
+      "title": "Create a working clickable prototype for “OneView Ops” that demonstrates the full product flow end-to-end using realistic sample data: authentication, onboarding, connection steps for Loxo/Aircall/timesheets, user mapping, and role-based dashboards for Leadership, Recruiter/Consultant, and Ops/HR.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-secure-authentication-using-internet-identity-and-enforce-role-based-access-control-for-four-user-types-admin-leadership-recruiter-consultant-ops-hr-provide-a-simple-admin-ui-to-assign-a-role-to-a-signed-in-principal-for-prototype-purposes",
+      "title": "Implement secure authentication using Internet Identity and enforce role-based access control for four user types: Admin, Leadership, Recruiter/Consultant, Ops/HR. Provide a simple admin UI to assign a role to a signed-in principal for prototype purposes.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-the-onboarding-flow-with-a-guided-step-by-step-setup-1-select-organization-type-staffing-agency-or-internal-ta-2-connect-loxo-api-oauth-screen-3-connect-aircall-api-screen-4-connect-timesheet-system-clockify-harvest-toggl-selection-or-upload-csv-5-auto-map-users-across-systems-with-manual-override-6-confirm-and-generate-dashboards",
+      "title": "Build the onboarding flow with a guided, step-by-step setup: (1) select organization type (Staffing Agency or Internal TA), (2) connect Loxo (API/OAuth screen), (3) connect Aircall (API screen), (4) connect timesheet system (Clockify/Harvest/Toggl selection) or upload CSV, (5) auto-map users across systems with manual override, (6) confirm and generate dashboards.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-an-integrations-area-that-models-the-three-integrations-and-their-data-domains-loxo-jobs-candidates-recruiters-pipeline-stages-placements-fees-aircall-calls-duration-direction-user-mapping-and-timesheets-logged-hours-billable-vs-non-billable-recruiter-mapping-for-the-prototype-implement-data-ingestion-as-sample-data-selection-plus-optional-csv-upload-for-timesheets-persist-the-chosen-configuration-per-organization",
+      "title": "Create an Integrations area that models the three integrations and their data domains: Loxo (Jobs, Candidates, Recruiters, Pipeline stages, Placements, Fees), Aircall (Calls, Duration, Direction, User mapping), and Timesheets (Logged hours, billable vs non-billable, recruiter mapping). For the prototype, implement data ingestion as sample-data selection plus optional CSV upload for timesheets; persist the chosen configuration per organization.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-auto-mapping-of-users-across-systems-using-deterministic-matching-e-g-email-name-heuristics-and-provide-a-manual-override-ui-where-an-admin-can-resolve-unmapped-or-conflicting-users-persist-the-mapping-and-use-it-to-attribute-calls-hours-pipeline-outcomes-to-the-same-person",
+      "title": "Implement auto-mapping of users across systems using deterministic matching (e.g., email/name heuristics) and provide a manual override UI where an admin can resolve unmapped or conflicting users; persist the mapping and use it to attribute calls/hours/pipeline outcomes to the same person.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-pre-built-role-based-dashboards-with-shared-global-filters-date-range-recruiter-client-job-and-role-based-navigation-dashboards-required-leadership-funnel-health-productivity-vs-outcome-revenue-or-time-to-fill-recruiter-calls-hours-pipeline-movement-placements-hires-ops-hr-utilization-burnout-risk-data-gaps",
+      "title": "Create pre-built, role-based dashboards with shared global filters (date range, recruiter, client, job) and role-based navigation. Dashboards required: Leadership (funnel health, productivity vs outcome, revenue OR time-to-fill), Recruiter (calls, hours, pipeline movement, placements/hires), Ops/HR (utilization, burnout risk, data gaps).",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-call-hours-outcome-funnel-analysis-view-that-correlates-calling-activity-count-duration-timesheet-effort-hours-and-outcomes-placements-hires-revenue-time-to-fill-across-selectable-time-periods-and-segments-recruiter-client-job",
+      "title": "Add a “Call → Hours → Outcome” funnel analysis view that correlates calling activity (count/duration), timesheet effort (hours), and outcomes (placements/hires/revenue/time-to-fill) across selectable time periods and segments (recruiter, client, job).",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-ai-based-dashboard-generation-from-plain-english-queries-as-a-prototype-friendly-feature-a-query-input-that-transforms-common-english-requests-into-one-of-the-existing-dashboard-templates-filter-states-and-a-set-of-widgets-without-calling-external-llm-apis",
+      "title": "Implement “AI-based dashboard generation from plain English queries” as a prototype-friendly feature: a query input that transforms common English requests into one of the existing dashboard templates, filter states, and a set of widgets, without calling external LLM APIs.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-provide-exports-for-reports-csv-export-for-underlying-tables-plus-prototype-exports-for-pdf-and-ppt-acceptable-as-simplified-single-report-exports-that-capture-key-kpis-and-charts-exports-must-respect-current-filters",
+      "title": "Provide exports for reports: CSV export for underlying tables, plus prototype exports for PDF and PPT (acceptable as simplified single-report exports that capture key KPIs and charts). Exports must respect current filters.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-alerts-and-narrative-insights-generate-rule-based-insights-e-g-anomalies-drops-missing-data-unusually-high-workload-and-display-them-as-cards-and-an-alerts-feed-allow-users-to-acknowledge-dismiss-alerts",
+      "title": "Add Alerts and Narrative Insights: generate rule-based insights (e.g., anomalies, drops, missing data, unusually high workload) and display them as cards and an alerts feed; allow users to acknowledge/dismiss alerts.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-cohesive-clean-modern-saas-visual-theme-for-oneview-ops-and-enforce-it-consistently-across-all-pages-typography-spacing-card-styles-charts-and-navigation-use-a-distinctive-palette-that-does-not-rely-on-blue-purple-e-g-charcoal-teal-amber-accents",
+      "title": "Apply a cohesive, clean modern SaaS visual theme for OneView Ops and enforce it consistently across all pages (typography, spacing, card styles, charts, and navigation). Use a distinctive palette that does not rely on blue/purple (e.g., charcoal + teal + amber accents).",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-generate-and-include-required-brand-static-images-for-the-prototype-store-them-in-frontend-public-assets-generated-and-use-them-in-the-ui-login-onboarding-app-shell-and-empty-states",
+      "title": "Generate and include required brand/static images for the prototype, store them in frontend/public/assets/generated, and use them in the UI (login/onboarding, app shell, and empty states).",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-prototype-sample-data-layer-to-support-dashboard-metrics-for-interviews-offers-revenue-margin-and-active-contractors-in-addition-to-existing-placements-metrics-so-dashboards-can-display-these-kpis-consistently-across-pages",
+      "title": "Update the prototype sample data layer to support dashboard metrics for interviews, offers, revenue, margin, and active contractors, in addition to existing placements metrics, so dashboards can display these KPIs consistently across pages.",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-extend-the-leadership-dashboard-to-surface-placements-interviews-offers-revenue-margin-and-active-contractors-as-visible-kpi-cards-sections-while-preserving-the-existing-staffing-vs-internal-ta-conditional-behavior",
+      "title": "Extend the Leadership Dashboard to surface placements, interviews, offers, revenue, margin, and active contractors as visible KPI cards/sections, while preserving the existing staffing vs internal-TA conditional behavior.",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-extend-the-recruiter-dashboard-to-display-placements-interviews-and-offers-kpis-alongside-existing-calls-hours-pipeline-activity-and-add-at-least-one-table-list-view-that-reflects-interview-offer-activity-in-the-current-filtered-period",
+      "title": "Extend the Recruiter Dashboard to display placements, interviews, and offers KPIs alongside existing calls/hours/pipeline activity, and add at least one table/list view that reflects interview/offer activity in the current filtered period.",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-extend-the-ops-hr-dashboard-to-include-visibility-into-active-contractors-as-an-additional-kpi-alongside-existing-utilization-burnout-data-completeness-content",
+      "title": "Extend the Ops/HR Dashboard to include visibility into Active Contractors as an additional KPI, alongside existing utilization/burnout/data completeness content.",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-prototype-ai-dashboard-query-parser-so-common-queries-mentioning-placements-interviews-offers-revenue-margin-or-active-contractors-route-to-an-appropriate-existing-dashboard-leadership-recruiter-ops-without-introducing-new-dashboard-routes",
+      "title": "Update the prototype AI dashboard query parser so common queries mentioning placements, interviews, offers, revenue, margin, or active contractors route to an appropriate existing dashboard (Leadership/Recruiter/Ops) without introducing new dashboard routes.",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-dedicated-leaderboards-experience-page-navigation-entry-with-oneup-style-gamified-rankings-that-connect-effort-calls-hours-to-outcomes-placements-hires-and-revenue-where-applicable-and-supports-team-vs-individual-views",
+      "title": "Add a dedicated Leaderboards experience (page + navigation entry) with OneUp-style gamified rankings that connect effort (calls + hours) to outcomes (placements/hires and revenue where applicable) and supports team vs individual views.",
+      "reqIds": [
+        "REQ-19"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-monthly-and-quarterly-goal-tracking-for-leaderboard-metrics-and-display-goal-progress-per-recruiter-and-optionally-per-team-including-current-vs-target-and-percent-to-goal",
+      "title": "Implement monthly and quarterly goal tracking for leaderboard metrics and display goal progress per recruiter (and optionally per team) including current vs target and percent-to-goal.",
+      "reqIds": [
+        "REQ-20"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-data-health-dashboard-that-surfaces-data-quality-rules-and-issues-including-flag-missing-recruiter-email-invalidate-calls-with-0-duration-warn-on-16-hours-day-quarantine-placements-without-job-and-show-an-overall-data-health-score-plus-issue-lists",
+      "title": "Add a Data Health Dashboard that surfaces data-quality rules and issues, including: flag missing recruiter email, invalidate calls with 0 duration, warn on >16 hours/day, quarantine placements without job, and show an overall data health score plus issue lists.",
+      "reqIds": [
+        "REQ-21"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-expand-the-prototype-sample-data-layer-to-explicitly-model-the-analytics-ready-star-schema-concept-fact-calls-fact-hours-fact-pipeline-fact-placements-and-dim-recruiter-dim-job-dim-client-dim-date-and-the-master-join-logic-primary-recruiter-email-secondary-recruiter-id-date-joins-job-joins-so-that-leaderboards-funnel-analysis-and-data-health-can-be-computed-consistently-from-these-structures",
+      "title": "Expand the prototype sample data layer to explicitly model the analytics-ready star schema concept (Fact_Calls, Fact_Hours, Fact_Pipeline, Fact_Placements and Dim_Recruiter, Dim_Job, Dim_Client, Dim_Date) and the master join logic (primary recruiter_email, secondary recruiter_id, date joins, job joins) so that leaderboards, funnel analysis, and data health can be computed consistently from these structures.",
+      "reqIds": [
+        "REQ-22"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-enhance-the-ai-generated-reports-experience-to-return-1-relevant-kpis-2-at-least-one-chart-table-and-3-a-short-written-narrative-insight-in-response-to-natural-language-questions-such-as-why-did-placements-drop-last-month-who-has-the-best-roi-per-hour-and-which-jobs-are-burning-most-effort-without-calling-external-llm-apis",
+      "title": "Enhance the AI-generated reports experience to return (1) relevant KPIs, (2) at least one chart/table, and (3) a short written narrative insight in response to natural-language questions such as “Why did placements drop last month?”, “Who has the best ROI per hour?”, and “Which jobs are burning most effort?” without calling external LLM APIs.",
+      "reqIds": [
+        "REQ-23"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-computed-metrics-commonly-referenced-as-power-bi-metrics-dax-logic-to-the-prototype-metric-computation-layer-and-ensure-they-are-visible-somewhere-appropriate-dashboards-leaderboards-reports-or-data-health-including-total-calls-total-hours-logged-calls-per-placement-hours-per-hire-revenue-per-recruiter-revenue-per-hour-time-to-fill-utilization",
+      "title": "Add computed metrics commonly referenced as “Power BI metrics (DAX logic)” to the prototype metric computation layer and ensure they are visible somewhere appropriate (dashboards, leaderboards, reports, or data health), including: Total Calls, Total Hours Logged, Calls per Placement, Hours per Hire, Revenue per Recruiter, Revenue per Hour, Time-to-Fill, Utilization %.",
+      "reqIds": [
+        "REQ-24"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-dedicated-loxo-integration-section-that-is-reachable-from-the-integrations-area-and-clearly-exposes-loxo-connection-status-and-configuration-options-sample-data-toggle-and-api-key-using-the-existing-integration-state-model-for-loxo",
+      "title": "Add a dedicated Loxo integration section that is reachable from the Integrations area and clearly exposes Loxo connection status and configuration options (sample data toggle and API key), using the existing integration state model for `loxo`.",
+      "reqIds": [
+        "REQ-25"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-single-discoverable-navigation-menu-experience-that-lists-all-available-dashboard-views-and-report-views-in-one-place-e-g-a-hub-page-with-sections-tabs-for-dashboards-reports-exports-and-analysis-views-so-users-can-browse-all-report-and-dashboard-types-from-one-menu",
+      "title": "Add a single, discoverable navigation/menu experience that lists all available dashboard views and report views in one place (e.g., a hub page with sections/tabs for Dashboards, Reports/Exports, and Analysis views), so users can browse all report and dashboard types from one menu.",
+      "reqIds": [
+        "REQ-26"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-new-default-dashboard-view-named-all-metrics-that-shows-all-key-kpis-and-metrics-in-one-screen-a-compact-scrollable-overview-using-the-existing-sample-metric-computation-layer-and-global-filters",
+      "title": "Create a new default dashboard view named \"All Metrics\" that shows all key KPIs and metrics in one screen (a compact, scrollable overview), using the existing sample metric computation layer and global filters.",
+      "reqIds": [
+        "REQ-27"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-provide-an-option-to-create-and-save-a-custom-dashboard-by-selecting-from-a-predefined-library-of-widgets-metrics-kpi-cards-simple-trend-chart-and-at-least-one-table-widget-and-persist-the-saved-custom-dashboards-so-they-reappear-in-the-dashboards-menu-hub-for-the-same-signed-in-user-and-or-their-organization",
+      "title": "Provide an option to create and save a custom dashboard by selecting from a predefined library of widgets/metrics (KPI cards, simple trend chart, and at least one table widget), and persist the saved custom dashboards so they reappear in the dashboards menu/hub for the same signed-in user (and/or their organization).",
+      "reqIds": [
+        "REQ-28"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Onboarding flow: choose org type (Staffing Agency vs Internal TA) and guided setup",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Integrate Loxo via API/OAuth (Jobs, Candidates, Recruiters, pipeline stages, Placements, Fees)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Integrate Aircall via API (Calls, duration, direction, user mapping)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Integrate timesheet systems (Clockify/Harvest/Toggl) and/or CSV upload (logged hours, billable vs non-billable, recruiter mapping)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Auto-map users across systems with manual override",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Auto-generate role-based dashboards (Leadership, Recruiter/Consultant, Ops/HR)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Pre-built dashboards with filters (date, recruiter, client, job) and role-based navigation",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Leadership dashboard: funnel health, productivity vs outcome, revenue or time-to-fill",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Recruiter dashboard: calls, hours, pipeline movement, placements/hires",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Ops dashboard: utilization, burnout risk, data gaps",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "Call → Hours → Outcome funnel analysis",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-12",
+      "summary": "AI-based dashboard generation from plain-English queries",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-13",
+      "summary": "Export reports to PDF, PPT, and CSV",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-14",
+      "summary": "Alerts and narrative insights on KPIs/anomalies",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-15",
+      "summary": "Secure authentication and permissions for Admin, Leadership, Recruiter/Consultant, and Ops/HR roles",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-16",
+      "summary": "Clickable prototype with sample data demonstrating onboarding, integrations, and dashboards",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-27",
+      "summary": "Define and persist core domain models in the Motoko backend needed for the prototype: organizations (type: Staffing/Internal TA), users/roles, integration connection metadata, system user records (Loxo/Aircall/Timesheet), user mappings, imported timesheet rows, and computed/aggregated metrics snapshots for dashboards.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-28",
+      "summary": "Expand dashboards/metrics to include placements, interviews, offers, revenue, margin, and active contractors (leveraging Loxo integration data where applicable)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-29",
+      "summary": "Gamified OneUp-style leaderboards with team vs individual rankings (calls, submissions, placements/hires, revenue), plus monthly/quarterly goals and real-time/dynamic updates",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-30",
+      "summary": "AI-generated reports experience (natural-language questions) that returns KPIs, charts, and written narrative insights (beyond routing to existing dashboard templates)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-31",
+      "summary": "Data Health dashboard and data-quality rules: flag missing recruiter email, invalidate 0-duration calls, warn on >16 hours/day, quarantine placements without jobs, surface data quality issues",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-32",
+      "summary": "Analytics-ready normalized data model with star schema (Fact_Calls, Fact_Hours, Fact_Pipeline, Fact_Placements + Dim_Recruiter, Dim_Job, Dim_Client, Dim_Date) and master join logic (primary recruiter_email, secondary recruiter_id, date/job joins)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-33",
+      "summary": "Add a dedicated UI section/page for Loxo integration setup and status (connect/configure/manage)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-34",
+      "summary": "Add a navigation menu that lists all report types and dashboard views (central Reports & Dashboards hub)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-35",
+      "summary": "Create a default \"All Metrics\" dashboard that surfaces all key KPIs/metrics in one view",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-36",
+      "summary": "Provide an option to create a custom dashboard (select widgets/metrics and save as a user/org dashboard)",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "OneView Ops",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

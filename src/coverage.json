@@ -1,0 +1,114 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-08T07:54:43.277Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 4,
+    "implemented": 4,
+    "items": [
+      {
+        "id": "REQ-25",
+        "summary": "Add a dedicated Loxo integration section that is reachable from the Integrations area and clearly exposes Loxo connection status and configuration options (sample data toggle and API key), using the existing integration state model for `loxo`.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/integrations/LoxoIntegrationPage.tsx",
+          "frontend/src/pages/integrations/IntegrationSettingsPanel.tsx",
+          "frontend/src/pages/integrations/ManageIntegrationDrawer.tsx",
+          "frontend/src/pages/integrations/IntegrationsPage.tsx",
+          "frontend/src/App.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/integrations/LoxoIntegrationPage.tsx",
+          "frontend/src/pages/integrations/IntegrationSettingsPanel.tsx",
+          "frontend/src/pages/integrations/ManageIntegrationDrawer.tsx",
+          "frontend/src/pages/integrations/IntegrationsPage.tsx",
+          "frontend/src/App.tsx"
+        ]
+      },
+      {
+        "id": "REQ-26",
+        "summary": "Add a single, discoverable navigation/menu experience that lists all available dashboard views and report views in one place (e.g., a hub page with sections/tabs for Dashboards, Reports/Exports, and Analysis views), so users can browse all report and dashboard types from one menu.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/dashboards/DashboardHubPage.tsx",
+          "frontend/src/components/layout/AppShell.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/dashboards/DashboardHubPage.tsx",
+          "frontend/src/components/layout/AppShell.tsx"
+        ]
+      },
+      {
+        "id": "REQ-27",
+        "summary": "Create a new default dashboard view named \"All Metrics\" that shows all key KPIs and metrics in one screen (a compact, scrollable overview), using the existing sample metric computation layer and global filters.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/dashboards/AllMetricsDashboardPage.tsx",
+          "frontend/src/App.tsx",
+          "frontend/src/pages/dashboards/DashboardHubPage.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/dashboards/AllMetricsDashboardPage.tsx",
+          "frontend/src/App.tsx",
+          "frontend/src/pages/dashboards/DashboardHubPage.tsx"
+        ]
+      },
+      {
+        "id": "REQ-28",
+        "summary": "Provide an option to create and save a custom dashboard by selecting from a predefined library of widgets/metrics (KPI cards, simple trend chart, and at least one table widget), and persist the saved custom dashboards so they reappear in the dashboards menu/hub for the same signed-in user (and/or their organization).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/hooks/useQueries.ts",
+          "frontend/src/pages/dashboards/CustomDashboardBuilderPage.tsx",
+          "frontend/src/pages/dashboards/CustomDashboardPage.tsx",
+          "frontend/src/components/dashboards/WidgetRenderer.tsx",
+          "frontend/src/utils/dashboardWidgetLibrary.ts",
+          "frontend/src/App.tsx",
+          "frontend/src/pages/dashboards/DashboardHubPage.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/hooks/useQueries.ts",
+          "frontend/src/pages/dashboards/CustomDashboardBuilderPage.tsx",
+          "frontend/src/pages/dashboards/CustomDashboardPage.tsx",
+          "frontend/src/components/dashboards/WidgetRenderer.tsx",
+          "frontend/src/utils/dashboardWidgetLibrary.ts",
+          "frontend/src/App.tsx",
+          "frontend/src/pages/dashboards/DashboardHubPage.tsx"
+        ]
+      }
+    ]
+  },
+  "changedFiles": [
+    "backend/main.mo",
+    "backend/migration.mo",
+    "build-request.json",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/src/App.tsx",
+    "frontend/src/backend.d.ts",
+    "frontend/src/backend.ts",
+    "frontend/src/components/dashboards/WidgetRenderer.tsx",
+    "frontend/src/components/layout/AppShell.tsx",
+    "frontend/src/declarations/backend.did.d.ts",
+    "frontend/src/declarations/backend.did.js",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/pages/dashboards/AllMetricsDashboardPage.tsx",
+    "frontend/src/pages/dashboards/CustomDashboardBuilderPage.tsx",
+    "frontend/src/pages/dashboards/CustomDashboardPage.tsx",
+    "frontend/src/pages/dashboards/DashboardHubPage.tsx",
+    "frontend/src/pages/integrations/IntegrationSettingsPanel.tsx",
+    "frontend/src/pages/integrations/IntegrationsPage.tsx",
+    "frontend/src/pages/integrations/LoxoIntegrationPage.tsx",
+    "frontend/src/pages/integrations/ManageIntegrationDrawer.tsx",
+    "frontend/src/utils/dashboardWidgetLibrary.ts",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}

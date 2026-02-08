@@ -1,0 +1,60 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-08T07:54:43.273Z",
+  "summary": "Implemented a dedicated Loxo integration detail page, a unified \"Reports & Dashboards\" hub/menu page in place of separate nav entries, and added a new \"All Metrics\" dashboard route with the specified KPI set. Implemented a custom dashboard builder and viewer plus backend model types/migration scaffolding, but some REQ-28 acceptance criteria are not fully evidenced in the diff (notably a table widget option and clear backend persistence/permissions enforcement details).",
+  "missing_requirements": [
+    {
+      "id": "REQ-28",
+      "requirement": "Custom dashboard widget library must include KPI cards, a simple trend chart, and at least one table widget.",
+      "reason": "The widget library shown contains KPI card widgets and one trend chart widget, but no table widget definition is present, so users cannot select a table widget in the builder.",
+      "evidence": [
+        "frontend/src/utils/dashboardWidgetLibrary.ts",
+        "frontend/src/components/dashboards/WidgetRenderer.tsx"
+      ]
+    },
+    {
+      "id": "REQ-28",
+      "requirement": "Saving a custom dashboard persists it via backend API and it appears in the dashboards hub/menu after refresh/sign-out+sign-in.",
+      "reason": "Frontend calls `useCreateDashboard` / `useGetAllDashboards`, and backend types/state for dashboards are added, but the diff summary does not show the backend actor methods (create/list/get) or any stable/persistence mechanism that would guarantee reappearance after refresh/sign-out+sign-in.",
+      "evidence": [
+        "frontend/src/pages/dashboards/CustomDashboardBuilderPage.tsx",
+        "frontend/src/pages/dashboards/DashboardHubPage.tsx",
+        "frontend/src/hooks/useQueries.ts",
+        "backend/main.mo",
+        "backend/migration.mo"
+      ]
+    },
+    {
+      "id": "REQ-28",
+      "requirement": "Non-admin users can only create/edit/delete their own custom dashboards (admins can access their own as well).",
+      "reason": "CustomDashboardPage computes an `isOwner` flag for UI purposes, but the diff summary does not show backend authorization checks for dashboard CRUD operations, nor edit/delete flows at all (edit is disabled).",
+      "evidence": [
+        "frontend/src/pages/dashboards/CustomDashboardPage.tsx",
+        "backend/main.mo",
+        "frontend/src/hooks/useQueries.ts"
+      ]
+    }
+  ],
+  "hallucinated_features": [],
+  "confidence": 0.72,
+  "changed_files": [
+    "backend/main.mo",
+    "backend/migration.mo",
+    "frontend-file-summaries.txt",
+    "frontend/src/App.tsx",
+    "frontend/src/components/dashboards/WidgetRenderer.tsx",
+    "frontend/src/components/layout/AppShell.tsx",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/pages/dashboards/AllMetricsDashboardPage.tsx",
+    "frontend/src/pages/dashboards/CustomDashboardBuilderPage.tsx",
+    "frontend/src/pages/dashboards/CustomDashboardPage.tsx",
+    "frontend/src/pages/dashboards/DashboardHubPage.tsx",
+    "frontend/src/pages/integrations/IntegrationSettingsPanel.tsx",
+    "frontend/src/pages/integrations/IntegrationsPage.tsx",
+    "frontend/src/pages/integrations/LoxoIntegrationPage.tsx",
+    "frontend/src/pages/integrations/ManageIntegrationDrawer.tsx",
+    "frontend/src/utils/dashboardWidgetLibrary.ts",
+    "project_state.json"
+  ]
+}
